@@ -6,12 +6,12 @@ using Movies.Contracts.Requests;
 
 namespace Movies.API.Controllers;
 
-[ApiController]
 [Route("api/[controller]")]
-public class MoviesController (IMovieRepository movieRepository) : ControllerBase
+[ApiController]
+public class MoviesController(IMovieRepository movieRepository)  : ControllerBase
 {
-   
-    [HttpPost("/create")]
+    [HttpPost]
+    [Route("create")]
     public async Task<IActionResult> Create(CreateMovieRequest obj)
     {
         var movie = obj.ToMovie();
@@ -21,7 +21,8 @@ public class MoviesController (IMovieRepository movieRepository) : ControllerBas
 
     }
     
-    [HttpGet("/get/{id:guid}" , Name = "getMovieById")]
+    [HttpGet]
+    [Route("/get/{id:guid}", Name = "getMovieById")]
     public async Task<IActionResult> GetById([FromRoute] Guid id)
     {
         var movie = await movieRepository.GetByIdAsync(id);
@@ -31,15 +32,17 @@ public class MoviesController (IMovieRepository movieRepository) : ControllerBas
         }
         return Ok(movie.ToString());
     }
-    [HttpGet("/getAll")]
+    [HttpGet]
+    [Route("getAll")]
     public async Task<IActionResult> GetAll()
     {
         var movie = await movieRepository.GetAllAsync();
 
-        return Ok(movie.ToString());
+        return Ok(movie.ToMovieResponse());
     }
-    
-    [HttpPost("/update")]
+
+    [HttpPost]
+    [Route("update")]
     public async Task<IActionResult> Update( [FromRoute] Guid id , [FromBody] UpdateMovieRequest obj)
     {
         var movie = obj.ToMovie(id);
@@ -51,8 +54,9 @@ public class MoviesController (IMovieRepository movieRepository) : ControllerBas
 
         return Ok();
     }
-    
-    [HttpPost("/delete")]
+
+    [HttpPost]
+    [Route("delete")]
     public async Task<IActionResult> Delete( [FromRoute] Guid id )
     {
         var isDeleted = await movieRepository.DeleteByIdAsync(id);

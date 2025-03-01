@@ -33,6 +33,7 @@ public static class ContractMapping
         return new MovieResponse
         {
             Title = request.Title,
+            Slug = request.Slug,
             RealiseYear = request.RealiseYear,
             Genres = request.Genres.ToList()
         };
