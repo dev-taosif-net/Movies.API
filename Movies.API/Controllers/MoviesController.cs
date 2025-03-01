@@ -23,9 +23,11 @@ public class MoviesController(IMovieRepository movieRepository)  : ControllerBas
     
     [HttpGet]
     [Route("/get/{id:guid}", Name = "getMovieById")]
-    public async Task<IActionResult> GetById([FromRoute] Guid id)
+    public async Task<IActionResult> GetById([FromRoute] string slugOrId)
     {
-        var movie = await movieRepository.GetByIdAsync(id);
+        var movie = Guid.TryParse(slugOrId, out var id)
+            ? await movieRepository.GetByIdAsync(id)
+            : await movieRepository.GetBySlugAsync(slugOrId);
         if (movie is null)
         {
             return NotFound();
