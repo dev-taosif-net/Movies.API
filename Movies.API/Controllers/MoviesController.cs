@@ -1,6 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Movies.API.Mapping;
-using Movies.Application.Models;
 using Movies.Application.Repositories;
 using Movies.Contracts.Requests;
 
@@ -22,7 +21,7 @@ public class MoviesController(IMovieRepository movieRepository)  : ControllerBas
     }
     
     [HttpGet]
-    [Route("/get/{id:guid}", Name = "getMovieById")]
+    [Route("/get", Name = "getMovieById")]
     public async Task<IActionResult> GetById([FromRoute] string slugOrId)
     {
         var movie = Guid.TryParse(slugOrId, out var id)
@@ -66,7 +65,6 @@ public class MoviesController(IMovieRepository movieRepository)  : ControllerBas
         {
             return BadRequest();
         }
-
         return Ok();
     }
 
