@@ -21,6 +21,14 @@ public class DbInitializer (IDBConnectionFactory _connectionFactory)
             RealiseYear INT NOT NULL
         )
         """);
+        
+        await connection.ExecuteAsync($"""
+                                       CREATE TABLE IF NOT EXISTS genres
+                                       (
+                                           MovieId UUID References movies(Id)
+                                           Name TEXT NOT NULL
+                                       )
+                                       """);
 
 
     }
